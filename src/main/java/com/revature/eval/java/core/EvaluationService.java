@@ -92,17 +92,28 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if(sideOne == sideTwo && sideOne == sideThree) {
+				return true;
+			} else
+				return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if(sideOne == sideTwo && sideOne == sideThree) {
+				return true;
+			} else if (sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree) {
+				return true;
+			} else
+				return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo && sideOne == sideThree && sideTwo == sideThree) {
+				return false;
+			} else
+				return true;
 		}
 
 	}
@@ -124,6 +135,7 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
+		
 		return 0;
 	}
 
