@@ -135,6 +135,7 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
+
 		String s = string.toUpperCase();
 		int total = 0;
 		for (int i = 0; i < s.length(); i++) {
@@ -147,7 +148,7 @@ public class EvaluationService {
 
 	private int scoreLetterValue(char charat) {
 		// TODO Auto-generated method stub
-		switch(charat) {
+		switch (charat) {
 		case 'A':
 		case 'E':
 		case 'I':
@@ -184,7 +185,7 @@ public class EvaluationService {
 		default:
 			return 0;
 		}
-		//return 0;
+		// return 0;
 	}
 
 	/**
@@ -220,8 +221,32 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
-		
-		return null;
+
+		String phoneNum = "";
+		boolean checkCountryCode = true;
+		int digitCount = 0;
+		for (int i = 0; i < string.length(); i++) {
+			if (Character.isDigit(string.charAt(i))) {
+				if (checkCountryCode) {
+					if (string.charAt(i) != '1') {
+						phoneNum += string.charAt(i);
+						digitCount++;
+						checkCountryCode = false;
+					}
+				} else {
+					phoneNum += string.charAt(i);
+					digitCount++;
+				}
+			}
+		}
+		if (digitCount != 10 || phoneNum.charAt(3) == '1') {
+			// return ("String not a PHone number."); Catch exception for invalid strings.
+			// IllegalArgumentException.class
+			throw new IllegalArgumentException();
+		}
+		return phoneNum;
+
+		// return null;
 	}
 
 	/**
