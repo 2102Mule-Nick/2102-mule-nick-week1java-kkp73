@@ -15,7 +15,7 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		char[] reversed = new char[string.length()];
-		for (int i = reversed.length - 1, j=0; i >= 0; i--, j++) {
+		for (int i = reversed.length - 1, j = 0; i >= 0; i--, j++) {
 			reversed[j] = string.charAt(i);
 		}
 		return new String(reversed);
@@ -33,11 +33,11 @@ public class EvaluationService {
 		// TODO Write an implementation for this method declaration
 		String acronym = "";
 		acronym += phrase.charAt(0);
-		for(int i = 1; i < phrase.length(); i++) {
-			if(phrase.charAt(i - 1) == ' ' || phrase.charAt(i - 1) == '-') {
+		for (int i = 1; i < phrase.length(); i++) {
+			if (phrase.charAt(i - 1) == ' ' || phrase.charAt(i - 1) == '-') {
 				acronym += phrase.toUpperCase().charAt(i);
-				}
 			}
+		}
 		return acronym;
 	}
 
@@ -92,7 +92,7 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			if(sideOne == sideTwo && sideOne == sideThree) {
+			if (sideOne == sideTwo && sideOne == sideThree) {
 				return true;
 			} else
 				return false;
@@ -100,7 +100,7 @@ public class EvaluationService {
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
-			if(sideOne == sideTwo && sideOne == sideThree) {
+			if (sideOne == sideTwo && sideOne == sideThree) {
 				return true;
 			} else if (sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree) {
 				return true;
@@ -135,8 +135,56 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		
-		return 0;
+		String s = string.toUpperCase();
+		int total = 0;
+		for (int i = 0; i < s.length(); i++) {
+			total += scoreLetterValue(s.charAt(i));
+		}
+		return total;
+
+		// return 0;
+	}
+
+	private int scoreLetterValue(char charat) {
+		// TODO Auto-generated method stub
+		switch(charat) {
+		case 'A':
+		case 'E':
+		case 'I':
+		case 'O':
+		case 'U':
+		case 'L':
+		case 'N':
+		case 'R':
+		case 'S':
+		case 'T':
+			return 1;
+		case 'D':
+		case 'G':
+			return 2;
+		case 'B':
+		case 'C':
+		case 'M':
+		case 'P':
+			return 3;
+		case 'F':
+		case 'H':
+		case 'V':
+		case 'W':
+		case 'Y':
+			return 4;
+		case 'K':
+			return 5;
+		case 'J':
+		case 'X':
+			return 8;
+		case 'Q':
+		case 'Z':
+			return 10;
+		default:
+			return 0;
+		}
+		//return 0;
 	}
 
 	/**
@@ -172,6 +220,7 @@ public class EvaluationService {
 	 */
 	public String cleanPhoneNumber(String string) {
 		// TODO Write an implementation for this method declaration
+		
 		return null;
 	}
 
