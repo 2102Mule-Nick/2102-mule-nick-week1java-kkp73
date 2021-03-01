@@ -485,7 +485,7 @@ public class EvaluationService {
 			for (char character : string.toCharArray()) {
 				if (character != ' ') {
 					int originalPosition = character - 'a';
-					int newPosition = (originalPosition+ this.key) % 26;
+					int newPosition = (originalPosition + this.key) % 26;
 					char newCharacter = (char) ('a' + newPosition);
 					newString += (Character.toString(newCharacter));
 				}
@@ -509,7 +509,7 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		if(i <= 0) {
+		if (i <= 0) {
 			throw new IllegalArgumentException();
 		}
 		int num = 1, count = 0, j;
@@ -522,8 +522,9 @@ public class EvaluationService {
 			}
 			if (j == num) {
 				count = count + 1;
-			} 
-		} return num;
+			}
+		}
+		return num;
 	}
 
 	/**
@@ -599,8 +600,43 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int value = 0;
+		int position = 10;
+		for (int i = 0; i < string.length(); i++) {
+			// return false if there are more than 10 ISBN digits
+			if (position < 1) {
+				return false;
+			}
+			char valueAtI = string.charAt(i);
+			if (valueAtI != '-') {
+				int isbnDigit = 0;
+				try {
+					isbnDigit = getISBNDigit(valueAtI);
+				} catch (IllegalArgumentException e) {
+					// Non-numeric character other than X encountered. Validation should fail.
+					return false;
+				}
+				// X can only appear in the last position as a check character
+				if (isbnDigit == 10 && position > 1) {
+					return false;
+				}
+				value += isbnDigit * (position--);
+			}
+		}
+		return value % 11 == 0;
 	}
+	
+	private int getISBNDigit(char value) throws IllegalArgumentException {
+		if (value == 'X') {
+			return 10;
+		}
+		else if (Character.isDigit(value)){
+			return Character.getNumericValue(value);
+		}
+		else {
+			throw new IllegalArgumentException("All characters in the string other than digits and X should fail validation");
+		}
+    }
 
 	/**
 	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
