@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -261,16 +262,17 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		//return null;
-		
+		// return null;
+
 		String[] word = string.split("\\W+");
 		HashMap<String, Integer> wordCounts = new HashMap<String, Integer>();
-		for(String words: word) {
-			if(wordCounts.containsKey(words)) {
-				wordCounts.put(words, wordCounts.get(words) +1);				
-			} else wordCounts.put(words, 1);
+		for (String words : word) {
+			if (wordCounts.containsKey(words)) {
+				wordCounts.put(words, wordCounts.get(words) + 1);
+			} else
+				wordCounts.put(words, 1);
 		}
-		
+
 		return wordCounts;
 	}
 
@@ -314,6 +316,18 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
+			@SuppressWarnings("unchecked")
+			Comparable<T> find_t = (Comparable<T>) t;
+			int mid = sortedList.size() / 2;
+			if (find_t.compareTo(sortedList.get(mid)) == 0) {
+				return mid;
+			} else if (find_t.compareTo(sortedList.get(mid)) <= 0) {
+				sortedList = sortedList.subList(0, mid);
+				return indexOf(t);
+			} else if (find_t.compareTo(sortedList.get(mid)) >= 0) {
+				sortedList = sortedList.subList(mid, sortedList.size());
+				return mid + indexOf(t);
+			}
 			return 0;
 		}
 
@@ -351,7 +365,14 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		int i;
+		for (i = 0; i < string.length(); i++) {
+			char ch = string.charAt(i);
+			if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
+				break; // means vowel is found at i
+		}
+		String retString = string.substring(i) + string.substring(0, i) + "ay";
+		return retString;
 	}
 
 	/**
@@ -371,7 +392,28 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		int sum = 0, t;
+		double remainder, digits = 0;
+		t = input;
+		// Count number of digits
+
+		while (t != 0) {
+			digits++;
+			t = t / 10;
+		}
+
+		t = input;
+
+		while (t != 0) {
+			remainder = t % 10;
+			sum = (int) (sum + Math.pow(remainder, digits));
+			t = t / 10;
+		}
+
+		if (input == sum)
+			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -386,7 +428,21 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> primeFactors = new ArrayList<Long>();
+		while (l % 2 == 0) {
+			primeFactors.add((long) 2);
+			l /= 2;
+		}
+		for (int i = 3; i <= Math.sqrt(l); i += 2) {
+			while (l % i == 0) {
+				primeFactors.add((long) i);
+				l /= i;
+			}
+		}
+		if (l > 2)
+			primeFactors.add((long) l);
+
+		return primeFactors;
 	}
 
 	/**
@@ -425,7 +481,16 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			String newString = "";
+			for (char character : string.toCharArray()) {
+				if (character != ' ') {
+					int originalPosition = character - 'a';
+					int newPosition = (originalPosition+ this.key) % 26;
+					char newCharacter = (char) ('a' + newPosition);
+					newString += (Character.toString(newCharacter));
+				}
+			}
+			return newString;
 		}
 
 	}
@@ -444,7 +509,21 @@ public class EvaluationService {
 	 */
 	public int calculateNthPrime(int i) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		if(i <= 0) {
+			throw new IllegalArgumentException();
+		}
+		int num = 1, count = 0, j;
+		while (count < i) {
+			num = num + 1;
+			for (j = 2; j <= num; j++) {
+				if (num % j == 0) {
+					break;
+				}
+			}
+			if (j == num) {
+				count = count + 1;
+			} 
+		} return num;
 	}
 
 	/**
