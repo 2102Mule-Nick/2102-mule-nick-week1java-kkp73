@@ -1,10 +1,14 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class EvaluationService {
 
@@ -561,7 +565,31 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			String shavedString = "", encodedString = "";
+			char holder;
+			String strippedString = string.replace(",", "");
+			strippedString = strippedString.replace(" ", "");
+			strippedString = strippedString.replace(".", "");
+			for (int x = 0; x < strippedString.length(); x++) {
+				shavedString += strippedString.charAt(x);
+				if ((x + 1) % 5 == 0 && x != 0) {
+					shavedString += " ";
+				}
+			}
+			System.out.println(shavedString);
+			for (int x = 0; x < shavedString.length(); x++) {
+				holder = shavedString.charAt(x);
+				if (Character.isLetter(shavedString.charAt(x))) {
+					if (Character.isLowerCase(holder)) {
+						holder = (char) ('a' - holder + 'z');
+					} else if (Character.isUpperCase(holder)) {
+						holder = (char) ('A' - holder + 'Z');
+					}
+				}
+				encodedString += Character.toLowerCase(holder);
+			}
+			encodedString = encodedString.trim();
+			return encodedString;
 		}
 
 		/**
@@ -625,18 +653,17 @@ public class EvaluationService {
 		}
 		return value % 11 == 0;
 	}
-	
+
 	private int getISBNDigit(char value) throws IllegalArgumentException {
 		if (value == 'X') {
 			return 10;
-		}
-		else if (Character.isDigit(value)){
+		} else if (Character.isDigit(value)) {
 			return Character.getNumericValue(value);
+		} else {
+			throw new IllegalArgumentException(
+					"All characters in the string other than digits and X should fail validation");
 		}
-		else {
-			throw new IllegalArgumentException("All characters in the string other than digits and X should fail validation");
-		}
-    }
+	}
 
 	/**
 	 * 16. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
@@ -666,7 +693,14 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		if (given instanceof LocalDate) {
+			LocalDateTime manyYearsLater = ((LocalDate) given).atStartOfDay();
+			manyYearsLater = manyYearsLater.plusSeconds(1000000000);
+			return manyYearsLater;
+		} else {
+			given = ((LocalDateTime) given).plusSeconds(1000000000);
+			return given;
+		}
 	}
 
 	/**
@@ -684,7 +718,22 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		HashSet<Integer> multiples = new HashSet<Integer>();
+		int sum = 0;
+
+		for (int num : set) {
+			for (int nn = 1; nn < i; nn++) {
+				if (nn % num == 0) {
+					multiples.add(nn);
+				}
+			}
+		}
+
+		for (int multiple : multiples) {
+			sum += multiple;
+		}
+
+		return sum;
 	}
 
 	/**
@@ -725,7 +774,34 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		ArrayList<Integer> digits = new ArrayList<Integer>();
+
+		for (int i = 0; i < string.length(); i++) {
+			if (Character.isDigit(string.charAt(i))) {
+				digits.add(string.charAt(i) - 48);
+			} else if (string.charAt(i) != ' ') {
+				return false;
+			}
+		}
+
+		if (digits.size() > 1) {
+			int sum = 0;
+			for (int i = digits.size() % 2; i < digits.size(); i++) {
+				if (i % 2 != 0) {
+					int doubled = digits.get(i) * 2;
+					if (doubled > 9) {
+						sum += doubled - 9;
+					} else {
+						sum += doubled;
+					}
+				} else {
+					sum += digits.get(i);
+				}
+			}
+			return sum % 10 == 0;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -757,6 +833,37 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
+		String[] words = string.substring(0, string.length() - 1).split(" ");
+		int[] numbers = new int[2];
+
+		int index = 0;
+		for (String word : words) {
+			if (index < 2) {
+				if (word.charAt(0) == '-') {
+					Scanner scan = new Scanner(word.substring(1));
+					numbers[index] = -scan.nextInt();
+					index++;
+					scan.close();
+				} else if (Character.isDigit(word.charAt(0))) {
+					Scanner scan = new Scanner(word);
+					numbers[index] = scan.nextInt();
+					index++;
+					scan.close();
+				}
+			} else {
+				break;
+			}
+		}
+		switch (words[3]) {
+		case "plus":
+			return numbers[0] + numbers[1];
+		case "minus":
+			return numbers[0] - numbers[1];
+		case "divided":
+			return numbers[0] / numbers[1];
+		case "multiplied":
+			return numbers[0] * numbers[1];
+		}
 		return 0;
 	}
 
